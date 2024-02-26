@@ -6,8 +6,8 @@ import { useLoaderData } from "react-router-dom";
 
 const ProductContainer = () => {
   const [gridLayout, setGridLayout] = useState(true);
-  const products = useLoaderData();
-  const totalProducts = products.data.meta.pagination.total;
+  const { response } = useLoaderData();
+  const totalProducts = response.data.meta.pagination.total;
   const setActiveStyles = (pattern) => {
     return `text-xl btn btn-circle btn-sm ${
       pattern === gridLayout

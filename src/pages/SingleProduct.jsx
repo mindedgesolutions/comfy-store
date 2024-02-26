@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { customFetch, formatPrice } from "../utils/functions";
 import { Link, useLoaderData } from "react-router-dom";
 import { generateAmountOptions } from "../utils/AmountOptions";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/cart/cartSlice";
 
 export const loader = async ({ params }) => {
   try {
@@ -15,6 +17,7 @@ export const loader = async ({ params }) => {
 
 const SingleProduct = () => {
   const response = useLoaderData();
+  const dispatch = useDispatch();
   const {
     image,
     title,
@@ -23,11 +26,28 @@ const SingleProduct = () => {
     colors,
     company,
   } = response.data.data.attributes;
+
   const inrAmount = formatPrice(price);
   const [productColor, setProductColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
+
   const handleAmount = (e) => {
     setAmount(parseInt(e.target.value));
+  };
+
+  const cartProduct = {
+    cartId: response.data.data.id + productColor,
+    productId: response.data.data.id,
+    image: image,
+    title: title,
+    price: price,
+    productColor: productColor,
+    company: company,
+    amount: amount,
+  };
+
+  const addToCart = () => {
+    dispatch(addItem({ product: cartProduct }));
   };
 
   return (
@@ -94,7 +114,9 @@ const SingleProduct = () => {
             </select>
           </div>
           <div className="mt-10">
-            <button className="btn btn-secondary btn-md">Add to bag</button>
+            <button className="btn btn-secondary btn-md" onClick={addToCart}>
+              Add to bag
+            </button>
           </div>
         </div>
       </div>
