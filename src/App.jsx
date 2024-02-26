@@ -7,7 +7,11 @@ import { ErrorElement } from "./components";
 import { loader as landingLoader } from "./pages/Landing";
 import { loader as singleProductLoader } from "./pages/SingleProduct";
 import { loader as productsLoader } from "./pages/Products";
+import { store } from "./store";
+
 // Actions
+import { action as registerAction } from "./pages/Register";
+import { action as loginAction } from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +37,8 @@ const router = createBrowserRouter([
       { path: "orders", element: <Web.Orders /> },
     ],
   },
-  { path: "/login", element: <Web.Login /> },
-  { path: "/register", element: <Web.Register /> },
+  { path: "/login", element: <Web.Login />, action: loginAction(store) },
+  { path: "/register", element: <Web.Register />, action: registerAction },
 ]);
 
 const App = () => {
